@@ -25,7 +25,7 @@ public class SearchPage {
 	
 	private By searchField = By.xpath("//input[@name='k']");
 	private By goButton = By.xpath("//input[@class='nav-input']");
-	private By firstProduct = By.xpath("(//div[@class='sg-col-inner'])[2]//div/img");
+	private By firstProduct = By.xpath("(//div[@class='sg-col-inner'])[1]//div/img");
 	private By menu = By.xpath("//i[contains(@class,'nav-icon-a11y')]");
 	private By logout = By.xpath("//a[text()='Sign Out']");
 	private By cross = By.xpath("//div[contains(@class,'hmenu-close-icon')]");
@@ -51,9 +51,7 @@ public class SearchPage {
 	
 	public void clickFirstProduct()
 	{
-//		Helper.isElementVisible(firstProduct, driver);
-		WebElement element = driver.findElement(firstProduct);
-		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+		Helper.scrollElementoWeb(firstProduct, driver);
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(firstProduct)).isDisplayed();
 		driver.findElement(firstProduct).click();
 	}
@@ -73,7 +71,14 @@ public class SearchPage {
 	{
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(menu)).isDisplayed();
 		driver.findElement(menu).click();	
-		Helper.isElementVisible(menu, driver);
+		//Helper.isElementVisible(logout, driver);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.scrollElementoWeb(logout, driver);
 		return driver.findElement(logout).isDisplayed();
 	}
 }
