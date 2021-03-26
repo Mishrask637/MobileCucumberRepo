@@ -1,8 +1,12 @@
 package driverfactoryutility;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecuteResultHandler;
+import org.apache.commons.exec.DefaultExecutor;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -38,6 +42,40 @@ public class DriverFactory {
 		return getdriver();
 	}
 	
+	
+	public void startServer() {
+		CommandLine cmd = new CommandLine("C:\\Users\\SurajM4\\Nodejs\\node.exe");
+		cmd.addArgument("C:\\Users\\SurajM4\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"); // C:\\Program
+		cmd.addArgument("--address");
+		cmd.addArgument("0.0.0.0");
+		cmd.addArgument("--port");
+		cmd.addArgument("4723");
+		
+		DefaultExecuteResultHandler handler = new DefaultExecuteResultHandler();
+		DefaultExecutor executor = new DefaultExecutor();
+		executor.setExitValue(1);
+		try {
+			Thread.sleep(5000);
+			executor.execute(cmd, handler);
+			Thread.sleep(10000);
+			System.out.println("Appium server started successfully");
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+	public void stopServer() { Runtime runtime =
+			 Runtime.getRuntime(); try {
+				  runtime.exec("taskkill /F /IM node.js");
+				  Thread.sleep(3000);
+				  runtime.exec("taskkill /F /IM node.exe");
+				  Thread.sleep(5000);
+				  System.out.println("Server Stopped successfully"); } catch (IOException e) {
+			  e.printStackTrace(); } catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} }
 	
 	public static AppiumDriver<MobileElement> getdriver()
 	{

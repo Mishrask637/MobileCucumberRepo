@@ -8,6 +8,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import utilities.ConfigReader;
 
 public class AppHooks {
@@ -25,7 +26,21 @@ public class AppHooks {
 		reader = new ConfigReader();
 		prop = reader.intiProp();
 	}
-	@Before(order = 1)
+	
+	@Before(order=1)
+	public void startServer(Scenario scenario)
+	{
+		if(scenario.getName().equals("Amazon login scenario"))
+		{
+			driverfactory.startServer();
+		}
+		else
+		{
+			System.out.println("Server Already Started");
+		}
+	}
+	
+	@Before(order = 2)
 	public void initialise()
 	{
 		String devicename = prop.getProperty("devicename");
@@ -43,6 +58,19 @@ public class AppHooks {
 	public void quit()
 	{
 		driver.quit();
+	}
+	
+	@After(order=0)
+	public void stopServer(Scenario scenario)
+	{
+		if(scenario.getName().equals("Search a mobile device"))
+		{
+			driverfactory.stopServer();
+		}
+		else
+		{
+			System.out.println("Scenario is remaining");
+		}
 	}
 	
 }
